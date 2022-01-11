@@ -1,0 +1,27 @@
+.cardContact {
+  display: flex;
+  flex-direction: column;
+  width: 23%;
+  border: 1px solid #666;
+  border-radius: 20px;
+  justify-content: space-around;
+  padding: 15px;
+  margin: 15px 10px;
+  align-items: center;
+  background: #292c3f;
+  opacity: 0.8;
+}
+
+.editBtn {
+  padding: 9px 30px;
+  border: none;
+  border-radius: 7px;
+  transition: color 0.5s ease;
+  font-size: 15px;
+  background: #666;
+  color: #fff;
+}
+.editBtn:hover {
+  color: #59ecfe;
+  cursor: pointer;
+}
