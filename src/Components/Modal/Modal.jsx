@@ -39,7 +39,6 @@ const Modal = ({ id, name, username, email, phone,displayModal, closeModal }) =>
           }}
         >
           <div className="editForm">
-            <h3>Editing : {state.username}</h3>
             <input placeholder="name" value={state.name} onChange={inputChangeHandler} name="name" />
             <input placeholder="UserName" value={state.username} onChange={inputChangeHandler} name="username" />
             <input placeholder="Email" value={state.email} onChange={inputChangeHandler} name="email" />
