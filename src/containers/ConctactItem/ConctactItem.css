@@ -1,7 +1,7 @@
-.cardContact {
+.contactCard {
   display: flex;
   flex-direction: column;
-  width: 23%;
+  width: 25%;
   border: 1px solid #666;
   border-radius: 20px;
   justify-content: space-around;
@@ -9,7 +9,8 @@
   margin: 15px 10px;
   align-items: center;
   background: #292c3f;
-  opacity: 0.8;
+  /* opacity: 0.8;
+   */
 }
 
 .editBtn {
@@ -24,4 +25,16 @@
 .editBtn:hover {
   color: #59ecfe;
   cursor: pointer;
+}
+
+@media screen and (max-width: 750px) {
+  .contactCard {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .contactCard {
+    font-size: 12px;
+  }
 }
