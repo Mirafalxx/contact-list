@@ -11,7 +11,7 @@ const ConctactList = () => {
   const [contactsList,setContactsList]=useState([]);
   const [fuseSearchContacts,setFuseSearchContacts]=useState([]);
   const [searchTerm,setSearchTerm]=useState('');
-    const [sortType,setSortType]=useState('asc');
+  const [sortType,setSortType]=useState('asc');
 
 
 
@@ -46,9 +46,7 @@ const ConctactList = () => {
 
 
 
-    
-    
-      const handleSearch=(e)=>{
+      const handleSearch=(e)=>{ 
         const fuse= new Fuse(fuseSearchContacts,{
           keys:[
             'name',
