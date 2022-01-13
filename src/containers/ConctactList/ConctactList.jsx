@@ -3,57 +3,64 @@ import ContactItem from '../ConctactItem/ConctactItem';
 import axiosApi from '../../services/axiosApi';
 import Fuse from 'fuse.js'
 import { saveContactData, loadContactData } from '../../services/localStorage';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import Search from '../../Components/Search/Search';
 import './ConctactList.css'
 
+
 const ConctactList = () => {
-    const [contactsList,setContactsList]=useState([]);
-    const [searchTerm,setSearchTerm]=useState('');
+  const [contactsList,setContactsList]=useState([]);
+  const [fuseSearchContacts,setFuseSearchContacts]=useState([]);
+  const [searchTerm,setSearchTerm]=useState('');
     const [sortType,setSortType]=useState('asc');
 
 
-    useEffect(() => {
+    const fetchContacts = async () => {
       const data=loadContactData();
-      const fetchContacts = async () => {
       try {
           if (!data)
           {
               const response = await axiosApi.get()
-              await saveContactData(response.data);
+              saveContactData(response.data);
           }
           setContactsList(data);
       } catch (e) {
         console.error(e);
       }
     };
+
+    useEffect(()=>{
+      if (contactsList)
+        {
+          contactsList.sort((a,b)=>{
+            const isReversed=(sortType ==='asc') ? 1:-1;
+            return isReversed *a.name.localeCompare(b.name);
+          });
+        }
+    })
+    
+    useEffect(() => {
     fetchContacts().catch(console.error());
     }, []);
     
-      function handleSearch({ currentTarget = {} })
-      {
-        const {value}=currentTarget;
-        setSearchTerm(value)
-      }
+      const handleSearch=(e)=>{
+        const fuse= new Fuse(fuseSearchContacts,{
+          keys:[
+            'name',
+          ],
+          includeScore:true,
+          minMatchCharLength:1,
+        });
 
-      const fuse= new Fuse(contactsList,{
-        keys:[
-          'name',
-          'username'
-        ],
-        includeScore:true,
-        minMatchCharLength:2,
-      })
+        const result = fuse.search(e.target.value).map((contact) => contact.item);
+        setSearchTerm(e.target.value);
+          if (searchTerm === '') setFuseSearchContacts(contactsList);
+            else setFuseSearchContacts(result);
+    }
+     
 
 
-      const fuseSearch=fuse.search(searchTerm);
-      const fuseSearchResult= searchTerm  ? fuseSearch.map(result=>result.item):contactsList;
+        
       
-      const sortedContact=fuseSearchResult.sort((a,b)=>{
-        const isReversed=(sortType ==='asc') ? 1:-1;
-        return isReversed *a.name.localeCompare(b.name);
-      })
-
 
       const contactForm=(data)=>{
           if (data)
@@ -70,26 +77,16 @@ const ConctactList = () => {
           }
       }
 
+      const contactsIsExist=searchTerm ?contactForm(fuseSearchContacts) : contactForm(contactsList)
 
-      let form = (<></>)
-  
     return (
       <div className='wrapper'>
            <div className='searchColumn'>
-                  <div className="searchBox">
-                      <input type="text" className="searchInput" placeholder="Search.." value={searchTerm} onChange={handleSearch}/>
-                    </div>
-                    <div className='sortBox'>
-                      <button className='sortButton' onClick={()=>setSortType('asc')}>
-                        <ArrowDownwardIcon/>
-                      </button>
-                      <button className='sortButton' onClick={()=>setSortType('desc')}>
-                      <ArrowUpwardIcon/>
-                      </button>
-                    </div>
+                    <Search  searchVal={searchTerm} onChange={handleSearch} onClickAsc={()=>setSortType('asc')} onClickDesc={()=>setSortType('desc')}/>
                   </div>
                   <div className='contactsColumn'>
-                    {contactForm(sortedContact)}
+                    {contactsList? contactsIsExist :<h2>Обновите страницу</h2>}
+                   
                   </div>
         </div>
     )

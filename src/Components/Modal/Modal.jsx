@@ -23,6 +23,8 @@ const Modal = ({ id, name, username, email, phone,displayModal, closeModal }) =>
       localStorageContacts[id].username = state.username;
       localStorageContacts[id].email = state.email;
       saveContactData(localStorageContacts);
+      closeModal();
+      window.location.reload();
     } catch (e) {
       console.log(e);
     }
@@ -38,15 +40,19 @@ const Modal = ({ id, name, username, email, phone,displayModal, closeModal }) =>
             opacity: displayModal ? '1' : '0',
           }}
         >
-          <div className="editForm">
-            <input placeholder="name" value={state.name} onChange={inputChangeHandler} name="name" />
-            <input placeholder="UserName" value={state.username} onChange={inputChangeHandler} name="username" />
-            <input placeholder="Email" value={state.email} onChange={inputChangeHandler} name="email" />
-            <input placeholder="Phone" value={state.phone} onChange={inputChangeHandler} name="phone" />
-            <button className="saveBtn" onClick={() => handlerFunc(id)}>
-              save
-            </button>
-          </div>
+        <div className="contact">
+          <label htmlFor="name">Name</label>
+          <input placeholder="name" value={state.name} onChange={inputChangeHandler} name="name"  id='name'/>
+          <label htmlFor="username">UserName</label>
+          <input placeholder="UserName" value={state.username} onChange={inputChangeHandler} name="username"  id='username'/>
+          <label htmlFor="email">Email</label>
+          <input placeholder="Email" value={state.email} onChange={inputChangeHandler} name="email"  id='email'/>
+          <label htmlFor="phone">Phone</label>
+          <input placeholder="Phone" value={state.phone} onChange={inputChangeHandler} name="phone" id='phone' />
+          <button className="saveBtn" onClick={() => handlerFunc(id)}>
+            save
+          </button>
+        </div>
         </div>
     </>
   );
