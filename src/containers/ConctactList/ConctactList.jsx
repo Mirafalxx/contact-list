@@ -14,6 +14,7 @@ const ConctactList = () => {
     const [sortType,setSortType]=useState('asc');
 
 
+
     const fetchContacts = async () => {
       const data=loadContactData();
       try {
@@ -38,9 +39,14 @@ const ConctactList = () => {
         }
     })
     
+    
     useEffect(() => {
     fetchContacts().catch(console.error());
     }, []);
+
+
+
+    
     
       const handleSearch=(e)=>{
         const fuse= new Fuse(fuseSearchContacts,{
@@ -56,29 +62,25 @@ const ConctactList = () => {
           if (searchTerm === '') setFuseSearchContacts(contactsList);
             else setFuseSearchContacts(result);
     }
-     
-
-
-        
-      
-
+    
+  
       const contactForm=(data)=>{
-          if (data)
-          {
-              return data.map((con)=>(<ContactItem
-                key={con.id}  
-                name={con.name} 
-                id={con.id}
-                username={con.username} 
-                email={con.email} 
-                phone={con.phone}
-                editContact={()=>console.log(con.id)}
-                />))
-          }
-      }
-
+        if (data)
+        {
+            return data.map((con)=>(<ContactItem
+              key={con.id}  
+              name={con.name} 
+              id={con.id}
+              username={con.username} 
+              email={con.email} 
+              phone={con.phone}
+              editContact={()=>console.log(con.id)}
+              />))
+        }
+    }
       const contactsIsExist=searchTerm ?contactForm(fuseSearchContacts) : contactForm(contactsList)
 
+      
     return (
       <div className='wrapper'>
            <div className='searchColumn'>
@@ -86,7 +88,6 @@ const ConctactList = () => {
                   </div>
                   <div className='contactsColumn'>
                     {contactsList? contactsIsExist :<h2>Обновите страницу</h2>}
-                   
                   </div>
         </div>
     )
